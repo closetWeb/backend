@@ -1,0 +1,52 @@
+{
+  "root": "apps/closet-server",
+  "sourceRoot": "apps/closet-server/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/node:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/closet-server",
+        "main": "apps/closet-server/src/main.ts",
+        "tsConfig": "apps/closet-server/tsconfig.app.json",
+        "assets": ["apps/closet-server/src/assets"]
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "apps/closet-server/src/environments/environment.ts",
+              "with": "apps/closet-server/src/environments/environment.prod.ts"
+            }
+          ]
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/node:node",
+      "options": {
+        "buildTarget": "closet-server:build"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/closet-server/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/closet-server"],
+      "options": {
+        "jestConfig": "apps/closet-server/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
