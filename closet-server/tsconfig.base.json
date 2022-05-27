@@ -7,14 +7,22 @@
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": ["es2017", "dom"],
+    // "lib": ["es2017", "dom"],
+    "lib": ["es2017", "dom", "ESNext.BigInt"],
+    "resolveJsonModule": true,
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@closet-web/backend":["libs/backend"],
+      "@closet-web/models":["libs/models"],
+      "@closet-web/globals":["libs/globals"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
