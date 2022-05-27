@@ -1,11 +1,13 @@
 import { Module } from '@nestjs/common';
+import { AuthControllerModule } from './domains/auth/auth.controller.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { UsersEntity } from '@closet-web/models';
+import { GlobalTypeOrmModule } from '@closet-web/globals';
 
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [AuthControllerModule, TypeOrmModule.forFeature([UsersEntity]), GlobalTypeOrmModule],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
