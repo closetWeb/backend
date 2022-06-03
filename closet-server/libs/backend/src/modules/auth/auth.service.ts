@@ -3,13 +3,30 @@ import {InjectRepository } from '@nestjs/typeorm'
 import { UsersEntity } from '@closet-web/models';
 import { Repository } from 'typeorm';
 import { pbkdf2Sync, randomBytes } from 'crypto';
-
+import {JwtService} from '@nestjs/jwt'
 @Injectable()
 export class AuthService {
-    constructor(@InjectRepository(UsersEntity) private readonly usersRepository:Repository<UsersEntity>) {}
+  constructor(@InjectRepository(UsersEntity) private readonly usersRepository: Repository<UsersEntity>,
+  private readonly jwtService: JwtService) { }
 
-    async signIn(param) {
-
+  async signIn(param) {
+    const user = await this.usersRepository.find({ email: param.email });
+    if (!user) {
+      throw new HttpException('Invalid User', 400);
+    }
+    const encryptPassword =
+          param.password &&
+          pbkdf2Sync(param.password, user.encKey, 131072, 64, 'sha512').toString('base64')
+    if (encryptPassword === user.password) {
+      
+    } else {
+      throw new HttpException('Invalid Password', 400);
+    }
+    return this.jwtService.sign({
+      email: user.email
+    }, {
+      expiresIn: '1d'
+    });
     }
 
     async signUp(param):Promise<boolean> {
