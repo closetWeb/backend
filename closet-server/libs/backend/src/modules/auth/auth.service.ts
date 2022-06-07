@@ -10,7 +10,7 @@ export class AuthService {
   private readonly jwtService: JwtService) { }
 
   async signIn(param) {
-    const user = await this.usersRepository.find({ email: param.email });
+    const user = await this.usersRepository.findOne({ email: param.email });
     if (!user) {
       throw new HttpException('Invalid User', 400);
     }
@@ -18,7 +18,7 @@ export class AuthService {
           param.password &&
           pbkdf2Sync(param.password, user.encKey, 131072, 64, 'sha512').toString('base64')
     if (encryptPassword === user.password) {
-      
+
     } else {
       throw new HttpException('Invalid Password', 400);
     }
@@ -30,7 +30,7 @@ export class AuthService {
     }
 
     async signUp(param):Promise<boolean> {
-      const hasUser = await this.usersRepository.find({ email: param.email });
+      const hasUser = await this.usersRepository.findOne({ email: param.email });
       if (hasUser) {
         new HttpException('This email is already signed', 400)
       }

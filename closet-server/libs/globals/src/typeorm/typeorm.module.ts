@@ -8,7 +8,7 @@ import {SnakeNamingStrategy} from "./snake-naming.stategy"
             useFactory: () => ({
                 type: 'mariadb',
                 host: process.env.TYPEORM_HOST,
-                port: Number(process.env.TYPEORM_PORT) || 3304,
+                port: Number(process.env.TYPEORM_PORT) || 3306,
                 database: process.env.TYPEORM_DATABASE,
                 username: process.env.TYPEORM_USERNAME,
                 password: process.env.TYPEORM_PASSWORD,
