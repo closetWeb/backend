@@ -33,7 +33,7 @@ export class AuthService {
     async signUp(param: ParamSignUpUserInterface):Promise<boolean> {
       const hasUser = await this.usersRepository.findOne({ email: param.email });
       if (hasUser) {
-        new HttpException('This email is already signed', 400)
+        throw new HttpException('This email is already signed', 400)
       }
 
       const buffer = randomBytes(64).toString('base64'),
@@ -56,7 +56,7 @@ export class AuthService {
 
         return true;
       } catch(e) {
-        new HttpException('Invalid SignUp data',400);
+        throw new HttpException('Invalid SignUp data',400);
       }
     }
 }
