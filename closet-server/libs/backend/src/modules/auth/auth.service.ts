@@ -4,12 +4,13 @@ import { UsersEntity } from '@closet-web/models';
 import { Repository } from 'typeorm';
 import { pbkdf2Sync, randomBytes } from 'crypto';
 import {JwtService} from '@nestjs/jwt'
+import { ParamSignInUserInterface, ParamSignUpUserInterface } from './interfaces';
 @Injectable()
 export class AuthService {
   constructor(@InjectRepository(UsersEntity) private readonly usersRepository: Repository<UsersEntity>,
   private readonly jwtService: JwtService) { }
 
-  async signIn(param) {
+  async signIn(param:ParamSignInUserInterface) {
     const user = await this.usersRepository.findOne({ email: param.email });
     if (!user) {
       throw new HttpException('Invalid User', 400);
@@ -29,7 +30,7 @@ export class AuthService {
     });
     }
 
-    async signUp(param):Promise<boolean> {
+    async signUp(param: ParamSignUpUserInterface):Promise<boolean> {
       const hasUser = await this.usersRepository.findOne({ email: param.email });
       if (hasUser) {
         new HttpException('This email is already signed', 400)
@@ -55,7 +56,7 @@ export class AuthService {
 
         return true;
       } catch(e) {
-        new HttpException('Invalid SignUp date',400);
+        new HttpException('Invalid SignUp data',400);
       }
     }
 }
