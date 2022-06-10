@@ -18,11 +18,14 @@ export class AuthService {
     const encryptPassword =
           param.password &&
           pbkdf2Sync(param.password, user.encKey, 131072, 64, 'sha512').toString('base64')
-    if (encryptPassword === user.password) {
-
-    } else {
-      throw new HttpException('Invalid Password', 400);
-    }
+    if (encryptPassword !== user.password) {
+throw new HttpException('Invalid Password', 400);
+    } 
+    console.log(this.jwtService.sign({
+      email: user.email
+    }, {
+      expiresIn: '1d'
+    }))
     return this.jwtService.sign({
       email: user.email
     }, {

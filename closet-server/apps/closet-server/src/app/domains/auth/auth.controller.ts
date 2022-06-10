@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, HttpException, Post } from '@nestjs/common';
 
 import { AuthService } from '@closet-web/backend';
 import { AppRequestPostSignInDto, AppRequestPostSignUpDto } from './dtos';
@@ -12,7 +12,8 @@ export class AuthController {
       const token = await this.authService.signIn(body);
       return token;
     } catch (e) {
-      return e;
+      console.log(e)
+      throw new HttpException(e.message, 400);
     }
   }
 
@@ -22,7 +23,7 @@ export class AuthController {
       await this.authService.signUp(body);
       return true;
     } catch (e) {
-      return e;
+      throw new HttpException(e.message, 400);
     }
   }
 }
